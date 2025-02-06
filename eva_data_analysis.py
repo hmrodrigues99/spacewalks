@@ -38,6 +38,31 @@ def write_dataframe_to_csv(df, output_file):
     df.to_csv(output_file, index=False)
 
 
+def plot_cumulative_time_in_space(eva_data, graph_file):
+    """
+    Process the pandas dataframe and create a plot cumulative time spent
+    in space over years and save the graph to a file
+
+    Args:
+        eva_data (pd.DataFrame): The input dataframe
+        graph_file (str): The path to the output graph file
+
+    Returns:
+        None
+    """
+    print(f'Plotting cumulative spacewalk duration and saving to {graph_file}')
+    # Process the duration column from a string (00:00) to get the total time in hours in float
+    eva_data['duration_hours'] = eva_data['duration'].str.split(":").apply(lambda x: int(x[0]) + int(x[1])/60)
+    #Plot cumulative time spent in space over years
+    eva_data['cumulative_time'] = eva_data['duration_hours'].cumsum()
+    plt.plot(eva_data['date'], eva_data['cumulative_time'], 'ko-')
+    plt.xlabel('Year')
+    plt.ylabel('Total time spent in space to date (hours)')
+    plt.tight_layout()
+    plt.savefig(graph_file)
+    plt.show()
+
+
 # Main code
 
 print("--START--")
@@ -52,15 +77,7 @@ eva_data = read_json_to_dataframe(input_file)
 # Convert and export data to CSV file
 write_dataframe_to_csv(eva_data, output_file)
 
-print(f'Plotting cumulative spacewalk duration and saving to {graph_file}')
 # Plot cumulative time spent in space over years
-eva_data['duration_hours'] = eva_data['duration'].str.split(":").apply(lambda x: int(x[0]) + int(x[1])/60)
-eva_data['cumulative_time'] = eva_data['duration_hours'].cumsum()
-plt.plot(eva_data['date'], eva_data['cumulative_time'], 'ko-')
-plt.xlabel('Year')
-plt.ylabel('Total time spent in space to date (hours)')
-plt.tight_layout()
-plt.savefig(graph_file)
-plt.show()
+plot_cumulative_time_in_space(eva_data, graph_file)
 
 print("--END--")
