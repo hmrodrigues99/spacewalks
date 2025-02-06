@@ -3,24 +3,17 @@ import pytest
 from eva_data_analysis import text_to_duration
 from eva_data_analysis import calculate_crew_size
 
-def test_calculate_screw_size ():
+@pytest.mark.parametrize("input_value, expected_result", [
+    ("Hugo;Carolina;Beatriz;Ivan;", 4),  # Typical value 1 - a crew with 4 members
+    ("Diogo;", 1),  # Typical value 2 - a crew with 1 lonely member
+    ("", None),  # Typical value 3 - Empty crew
+])
+def test_calculate_screw_size(input_value, expected_result):
     """
     Test the calculate_crew_size function with different crew inputs
+    It uses a decorator at the top to use different inputs
     """
-    
-    # Typical value 1 - a crew with 4 members
-    actual_result = calculate_crew_size("Hugo;Carolina;Beatriz;Ivan")
-    expected_result = 4
-    assert actual_result == expected_result
-    
-    # Typical value 2 - a crew with 1 lonely member
-    actual_result = calculate_crew_size("Diogo")
-    expected_result = 1
-    assert actual_result == expected_result
-
-    # Typical value 3 - Empty crew
-    actual_result = calculate_crew_size("")
-    expected_result = None
+    actual_result = calculate_crew_size(input_value)
     assert actual_result == expected_result
 
 
