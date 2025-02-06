@@ -38,6 +38,9 @@ source venv_spacewalks/Scripts/activate
 
 # Install the necessary dependencies
 python3 -m pip install -r requirements.txt
+
+# Check that everything is working correctly with pytest
+python3 -m pytest
 ```
 
 ## Simple Usage Example
@@ -48,7 +51,9 @@ launch the script using Python as follows:
 ```
 # Usage Examples
 python3 eva_data_analysis.py eva-data.json eva-data.csv
+
+python3 eva_data_analysis.py data/eva-data.json eva-data.csv
 ```
 
-The first argument is the path for the JSON input file
-The second argument is the path for the output CSV file
+The first argument is the path for the JSON input file (an example data file is stored under the `data` directory).
+The second argument is the path for the CSV output file.
